@@ -117,3 +117,93 @@ The request body should be in JSON format and include the following fields:
 
 - Ensure the `Content-Type` header is set to `application/json` in the request.
 - The `token` in the response is a JWT token that can be used for authentication in subsequent requests.
+
+## Endpoint: `/users/login`
+
+### Description
+
+This endpoint is used to authenticate a user. It validates the input data, checks the credentials, and returns a JWT token if the login is successful.
+
+### Method
+
+`POST`
+
+### Request Body
+
+The request body should be in JSON format and include the following fields:
+
+| Field      | Type   | Required | Description                        |
+| ---------- | ------ | -------- | ---------------------------------- |
+| `email`    | String | Yes      | A valid email address.             |
+| `password` | String | Yes      | The user's password.               |
+
+### Example Request
+
+```json
+{
+  "email": "john.doe@example.com",
+  "password": "password123"
+}
+```
+
+### Response
+
+#### Success Response
+
+- **Status Code:** `200 OK`
+- **Body:**
+  ```json
+  {
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+    "user": {
+      "_id": "64f1c2e5b5d6c2a1b8e4f123",
+      "fullname": {
+        "firstname": "John",
+        "lastname": "Doe"
+      },
+      "email": "john.doe@example.com"
+    }
+  }
+  ```
+
+#### Error Responses
+
+- **Status Code:** `400 Bad Request`
+
+  - **Reason:** Validation errors in the input data.
+  - **Body:**
+    ```json
+    {
+      "errors": [
+        {
+          "msg": "Please enter a valid email address.",
+          "param": "email",
+          "location": "body"
+        }
+      ]
+    }
+    ```
+
+- **Status Code:** `401 Unauthorized`
+
+  - **Reason:** Invalid email or password.
+  - **Body:**
+    ```json
+    {
+      "message": "Invalid email or password"
+    }
+    ```
+
+- **Status Code:** `500 Internal Server Error`
+  - **Reason:** Server-side error during login.
+  - **Body:**
+    ```json
+    {
+      "error": "Internal server error"
+    }
+    ```
+
+### Notes
+
+- Ensure the `Content-Type` header is set to `application/json` in the request.
+- The `token` in the response is a JWT token that can be used for authentication in subsequent requests.

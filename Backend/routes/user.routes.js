@@ -1,7 +1,8 @@
-const { validationResult } = require('express-validator'); // Import validationResult
+const { validationResult, body } = require('express-validator'); // Import validationResult
 const express = require('express');
 const router = express.Router();
 const User = require('../models/user.model');
+const userController = require('../controllers/user.controller'); // Import userController
 
 exports.registerUser = async (req, res) => {
     try {
@@ -22,5 +23,15 @@ exports.registerUser = async (req, res) => {
         res.status(500).json({ message: 'Internal Server Error' });
     }
 };
+
+router.post('/users/register', [
+    body('email').isEmail().withMessage('Please enter a valid email address'),
+    body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters long')
+], exports.registerUser); // Add route for user registration
+
+router.post('/login', [
+    body('email').isEmail().withMessage('Please enter a valid email address'),
+    body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters long')
+], userController.loginUser); // Ensure userController is imported
 
 module.exports = router;
