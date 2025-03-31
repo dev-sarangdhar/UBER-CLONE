@@ -4,6 +4,7 @@ const cors = require('cors');
 const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
+const cookieParser = require('cookie-parser'); // Import cookie-parser
 const connectToDb = require('../Backend/db/db'); // Correct path
 const PORT = 4000;
 
@@ -18,6 +19,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json()); // Middleware to parse JSON
+app.use(cookieParser()); // Middleware to parse cookies
 
 // Routes
 const userRoutes = require('./routes/user.routes');

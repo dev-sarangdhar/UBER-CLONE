@@ -207,3 +207,96 @@ The request body should be in JSON format and include the following fields:
 
 - Ensure the `Content-Type` header is set to `application/json` in the request.
 - The `token` in the response is a JWT token that can be used for authentication in subsequent requests.
+
+## Endpoint: `/users/logout`
+
+### Description
+
+This endpoint logs out the user by blacklisting the token and clearing the authentication cookie.
+
+### Method
+
+`GET`
+
+### Response
+
+#### Success Response
+
+- **Status Code:** `200 OK`
+- **Body:**
+  ```json
+  {
+    "message": "Logged out successfully"
+  }
+  ```
+
+#### Error Responses
+
+- **Status Code:** `400 Bad Request`
+  - **Reason:** No token provided.
+  - **Body:**
+    ```json
+    {
+      "message": "No token provided"
+    }
+    ```
+
+- **Status Code:** `500 Internal Server Error`
+  - **Reason:** Server-side error during logout.
+  - **Body:**
+    ```json
+    {
+      "message": "Error logging out",
+      "error": "Detailed error message"
+    }
+    ```
+
+---
+
+## Endpoint: `/profile`
+
+### Description
+
+This endpoint retrieves the profile of the authenticated user.
+
+### Method
+
+`GET`
+
+### Response
+
+#### Success Response
+
+- **Status Code:** `200 OK`
+- **Body:**
+  ```json
+  {
+    "_id": "64f1c2e5b5d6c2a1b8e4f123",
+    "fullname": {
+      "firstname": "John",
+      "lastname": "Doe"
+    },
+    "email": "john.doe@example.com"
+  }
+  ```
+
+#### Error Responses
+
+- **Status Code:** `401 Unauthorized`
+  - **Reason:** User is not authenticated.
+  - **Body:**
+    ```json
+    {
+      "message": "Unauthorized access"
+    }
+    ```
+
+- **Status Code:** `500 Internal Server Error`
+  - **Reason:** Server-side error during profile retrieval.
+  - **Body:**
+    ```json
+    {
+      "message": "Server error",
+      "error": "Detailed error message"
+    }
+    ```

@@ -28,12 +28,12 @@ const userSchema = new mongoose.Schema({
     socketId: {
         type: String,
     },
-})
+});
 
+// 🔹 Correct `generateAuthToken` to use `this._id`
 userSchema.methods.generateAuthToken = async function () {
-    const token = jwt.sign({ _id: user._id.toString() }, process.env.JWT_SECRET, { expiresIn: '1h' }); 
+    const token = jwt.sign({ _id: this._id.toString() }, process.env.JWT_SECRET, { expiresIn: '24h' }); 
     return token; 
-
 }
 
 userSchema.methods.comparePassword = async function (password) {
