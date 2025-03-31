@@ -1,0 +1,119 @@
+# Backend API Documentation
+
+## Endpoint: `/users/register`
+
+### Description
+
+This endpoint is used to register a new user in the system. It validates the input data, hashes the password, and stores the user information in the database.
+
+### Method
+
+`POST`
+
+### Request Body
+
+The request body should be in JSON format and include the following fields:
+
+| Field                | Type   | Required | Description                                    |
+| -------------------- | ------ | -------- | ---------------------------------------------- |
+| `fullname.firstname` | String | Yes      | The first name of the user (min 3 characters). |
+| `fullname.lastname`  | String | No       | The last name of the user (min 3 characters).  |
+| `email`              | String | Yes      | A valid email address.                         |
+| `password`           | String | Yes      | A password with a minimum of 6 characters.     |
+
+### Example Request
+
+```json
+{
+  "fullname": {
+    "firstname": "John",
+    "lastname": "Doe"
+  },
+  "email": "john.doe@example.com",
+  "password": "password123"
+}
+```
+
+### Response
+
+#### Success Response
+
+- **Status Code:** `201 Created`
+- **Body:**
+  ```json
+  {
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+    "user": {
+      "_id": "64f1c2e5b5d6c2a1b8e4f123",
+      "fullname": {
+        "firstname": "John",
+        "lastname": "Doe"
+      },
+      "email": "john.doe@example.com"
+    }
+  }
+  ```
+
+#### Error Responses
+
+- **Status Code:** `400 Bad Request`
+
+  - **Reason:** Validation errors in the input data.
+  - **Body:**
+    ```json
+    {
+      "errors": [
+        {
+          "msg": "Please enter a valid email address.",
+          "param": "email",
+          "location": "body"
+        }
+      ]
+    }
+    ```
+
+- **Status Code:** `500 Internal Server Error`
+  - **Reason:** Server-side error during user registration.
+  - **Body:**
+    ```json
+    {
+      "error": "Internal server error"
+    }
+    ```
+
+### Example Response
+
+#### Success Response
+
+```json
+{
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "user": {
+    "_id": "64f1c2e5b5d6c2a1b8e4f123",
+    "fullname": {
+      "firstname": "John",
+      "lastname": "Doe"
+    },
+    "email": "john.doe@example.com"
+  }
+}
+```
+
+#### Error Response
+
+```json
+{
+  "errors": [
+    {
+      "msg": "Please enter a valid email address.",
+      "param": "email",
+      "location": "body"
+    }
+  ]
+}
+```
+
+### Notes
+
+- Ensure the `Content-Type` header is set to `application/json` in the request.
+- The `token` in the response is a JWT token that can be used for authentication in subsequent requests.
